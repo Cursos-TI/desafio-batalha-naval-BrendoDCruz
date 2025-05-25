@@ -1,55 +1,85 @@
 #include <stdio.h>
 
+#define LINHAS 10
+#define COLUNAS 10
+
 int main() {
-    char tabuleiro[10][10];
+    char tabuleiro[LINHAS][COLUNAS];
     int i, j;
 
-    for (i = 0; i < 10; i++) {
-        for (j = 0; j < 10; j++) {
+    for (i = 0; i < LINHAS; i++) {
+        for (j = 0; j < COLUNAS; j++) {
             tabuleiro[i][j] = '0';
         }
     }
 
-    char navio1[3] = {'3', '3', '3'};
-    char navio2[3] = {'3', '3', '3'};
-
-    int linha1 = 2, coluna1 = 2; 
-    int linha2 = 0, coluna2 = 1; 
-
-    if (coluna1 + 3 <= 10) {
-        for (i = 0; i < 3; i++) {
-            if (tabuleiro[linha1][coluna1 + i] == '3') {
-                printf("Erro: sobreposição detectada no navio1.\n");
-                return 1;
-            }
+    int l1 = 2, c1 = 1;
+    int valido1 = 1;
+    for (i = 0; i < 3; i++) {
+        if (c1 + i >= COLUNAS || tabuleiro[l1][c1 + i] == '3') {
+            valido1 = 0;
+            break;
         }
+    }
+    if (valido1) {
         for (i = 0; i < 3; i++) {
-            tabuleiro[linha1][coluna1 + i] = navio1[i];
+            tabuleiro[l1][c1 + i] = '3';
         }
     }
 
-    if (linha2 + 3 <= 10) {
-        for (i = 0; i < 3; i++) {
-            if (tabuleiro[linha2 + i][coluna2] == '3') {
-                printf("Erro: sobreposição detectada no navio2.\n");
-                return 1;
-            }
+    int l2 = 4, c2 = 5;
+    int valido2 = 1;
+    for (i = 0; i < 3; i++) {
+        if (l2 + i >= LINHAS || tabuleiro[l2 + i][c2] == '3') {
+            valido2 = 0;
+            break;
         }
+    }
+    if (valido2) {
         for (i = 0; i < 3; i++) {
-            tabuleiro[linha2 + i][coluna2] = navio2[i];
+            tabuleiro[l2 + i][c2] = '3';
         }
     }
 
-    printf("\n   TABULEIRO  BATALHA  NAVAL\n");
-    printf("   A B C D E F G H I J\n");
+    int l3 = 0, c3 = 4;
+    int valido3 = 1;
+    for (i = 0; i < 3; i++) {
+        if (l3 + i >= LINHAS || c3 + i >= COLUNAS || tabuleiro[l3 + i][c3 + i] == '3') {
+            valido3 = 0;
+            break;
+        }
+    }
+    if (valido3) {
+        for (i = 0; i < 3; i++) {
+            tabuleiro[l3 + i][c3 + i] = '3';
+        }
+    }
 
-    for (i = 0; i < 10; i++) {
-        if (i < 9)
-            printf(" %d ", i + 1);
-        else
-            printf("%d ", i + 1);
+    int l4 = 6, c4 = COLUNAS - 1;
+    int valido4 = 1;
+    for (i = 0; i < 3; i++) {
+        if (l4 + i >= LINHAS || c4 - i < 0 || tabuleiro[l4 + i][c4 - i] == '3') {
+            valido4 = 0;
+            break;
+        }
+    }
+    if (valido4) {
+        for (i = 0; i < 3; i++) {
+            tabuleiro[l4 + i][c4 - i] = '3';
+        }
+    }
 
-        for (j = 0; j < 10; j++) {
+    printf("\n   TABULEIRO  BATALHA  NAVAL\n   ");
+    for (j = 0; j < COLUNAS; j++) {
+        printf("%c ", 'A' + j);
+    }
+    printf("\n");
+
+    for (i = 0; i < LINHAS; i++) {
+        if (i < 9) printf(" %d ", i + 1);
+        else printf("%d ", i + 1);
+
+        for (j = 0; j < COLUNAS; j++) {
             printf("%c ", tabuleiro[i][j]);
         }
         printf("\n");
